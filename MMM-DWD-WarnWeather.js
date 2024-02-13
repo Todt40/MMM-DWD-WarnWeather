@@ -106,14 +106,19 @@ Module.register("MMM-DWD-WarnWeather", {
 			wrapper.appendChild(locNotFound);
 		}
 
-		// Check if warning data was loaded
-		if (!this.loaded) {
-			var loading = document.createElement("p");
-			loading.className = 'status';
-			loading.innerHTML = this.config.loadingText;
-			wrapper.appendChild(loading);
-			return wrapper;
-		}
+        // Check if warning data was loaded
+        if (!this.loaded || (this.warnings.length < 1 && this.config.hideNoWarning)) {
+            var loading = document.createElement("p");
+            loading.className = 'status';
+            loading.innerHTML = this.config.loadingText;
+            wrapper.appendChild(loading);
+
+            if (this.config.hideNoWarning) {
+                wrapper.classList.add('hidden'); // Add 'hidden' class to wrapper for hiding full module
+            }
+
+            return wrapper;
+        }
 
 		// Check if there are warnings for defined region
 		if (this.warnings.length < 1) {
